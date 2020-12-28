@@ -1,29 +1,27 @@
 package main
 
 import (
-	"WGManager/utils"
-	"WGManager/webapi"
-	"WGManager/wg"
-	"log"
+	"WGManagerAirwatch/webapi"
+	wgairwatch "WGManagerAirwatch/wgairwatch"
 	"os"
 )
 
 func main() {
-	defaultConfigFilePath := "wgmanconfig.json"
+	defaultConfigFilePath := "wgmanairwatchconfig.json"
 	if len(os.Args) > 1 {
 		defaultConfigFilePath = os.Args[1]
 	}
-	runningAsRoot, err := utils.CheckIfAdminOrRoot()
-	if err != nil {
-		panic(err)
-	}
-	if !runningAsRoot {
-		log.Fatalln("You must run this app as Admin or Root!")
-	}
+	// runningAsRoot, err := utils.CheckIfAdminOrRoot()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// if !runningAsRoot {
+	// 	log.Fatalln("You must run this app as Admin or Root!")
+	// }
 
 	//Load the config file
-	var wgc wg.WGConfig
-	err = wgc.ParseConfigFile(defaultConfigFilePath)
+	var wgc wgairwatch.WGConfig
+	err := wgc.ParseConfigFile(defaultConfigFilePath)
 	if err != nil {
 		newconfig, err := wgc.CreateDefaultconfig(defaultConfigFilePath)
 		if err != nil {

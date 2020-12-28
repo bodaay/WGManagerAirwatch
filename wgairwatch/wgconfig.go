@@ -32,17 +32,20 @@ const defaultInstanceConfigPath = "wginstance"
 //WGConfig Global Configuration For WGManager
 type WGConfig struct {
 	sync.Mutex
-	APIListenAddress           string              `json:"api_listen_address"`
-	APIListenPort              uint16              `json:"api_listen_port"`
-	AdminAPIListenAddress      string              `json:"admin_api_listen_address"`
-	AdminAPIListenPort         uint16              `json:"admin_api_listen_port"`
-	APIUseTLS                  bool                `json:"api_use_tls"`
-	APITLSCert                 string              `json:"apitls_cert"`
-	APITLSKey                  string              `json:"apitls_key"`
-	APIAllowedIPS              []string            `json:"api_allowed_ips"`
-	InstancesConfigPath        string              `json:"instances_config_path"`
-	WGInsatncesServiceFilePath string              `json:"wg_insatnces_service_file_path"`
-	WGInstances                []*WGInstanceConfig `json:"wg_instances"`
+	APIListenAddress        string   `json:"api_listen_address"`
+	APIListenPort           uint16   `json:"api_listen_port"`
+	APIUseTLS               bool     `json:"api_use_tls"`
+	APITLSCert              string   `json:"apitls_cert"`
+	APITLSKey               string   `json:"apitls_key"`
+	APIAllowedIPS           []string `json:"api_allowed_ips"`
+	WGManagerAddressIP      string   `json:"wgmanager_address_ip"`
+	WGManagerPort           uint16   `json:"wgmanager_address_port"`
+	AllocateClientEventsIDs []uint64 `json:"allocate_client_event_ids"`
+	RevokeClientEventsIDs   []uint64 `json:"revoke_client_event_ids"`
+}
+type WGConfigInstanceMap struct {
+	MapKeyName      string
+	MapInstanceName string
 }
 
 //WGInstanceConfig Per Instance Configuration
