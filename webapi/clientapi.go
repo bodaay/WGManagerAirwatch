@@ -1,9 +1,7 @@
 package webapi
 
 import (
-	"WGManager/webapi/resource"
-	"WGManager/wg"
-	"bytes"
+	"WGManagerAirwatch/wgairwatch"
 	"mime"
 	"net/http"
 	"strconv"
@@ -13,7 +11,7 @@ import (
 )
 
 //StartAdminClient start the REST API Echo Server for inserting watermark
-func StartClient(wgConfig *wg.WGConfig) error {
+func StartClient(wgConfig *wgairwatch.WGConfigAirwatch) error {
 	e := echo.New()
 	const subserviceIdentifier = "StartWebClient"
 	configureClientWebServer(e)
@@ -41,42 +39,43 @@ func configureClientWebServer(e *echo.Echo) {
 
 }
 
-func configureAllRoutesClient(e *echo.Echo, wgConfig *wg.WGConfig) {
+func configureAllRoutesClient(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 	postAllocateClient(e, wgConfig)
 	postRevokeClient(e, wgConfig)
 }
 
-func postAllocateClient(e *echo.Echo, wgConfig *wg.WGConfig) {
+func postAllocateClient(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 	e.POST("/api/client", func(c echo.Context) error {
-		u := new(resource.WgAllocateClientRequest)
-		if err := c.Bind(u); err != nil {
-			c.String(http.StatusBadRequest, err.Error())
-		}
-		qrbytes, err := wgConfig.AllocateClient(u.Instancename, u.Clientuuid)
-		responseObj := "Allocation Successfull"
-		if err != nil {
-			responseObj = err.Error()
-			return c.JSONPretty(http.StatusBadRequest, responseObj, "  ")
-		}
-		return c.Stream(http.StatusOK, "image/jpeg", bytes.NewReader(qrbytes))
-		//return c.JSONPretty(http.StatusOK, responseObj, "  ")
+		// u := new(resource.WgAllocateClientRequest)
+		// if err := c.Bind(u); err != nil {
+		// 	c.String(http.StatusBadRequest, err.Error())
+		// }
+		// qrbytes, err := wgConfig.AllocateClient(u.Instancename, u.Clientuuid)
+		// responseObj := "Allocation Successfull"
+		// if err != nil {
+		// 	responseObj = err.Error()
+		// 	return c.JSONPretty(http.StatusBadRequest, responseObj, "  ")
+		// }
+		// return c.Stream(http.StatusOK, "image/jpeg", bytes.NewReader(qrbytes))
+		return c.String(http.StatusOK, "responseObj")
 	})
 }
 
-func postRevokeClient(e *echo.Echo, wgConfig *wg.WGConfig) {
+func postRevokeClient(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 	e.DELETE("/api/client", func(c echo.Context) error {
-		u := new(resource.WgRevokeClientRequest)
-		if err := c.Bind(u); err != nil {
-			c.String(http.StatusBadRequest, err.Error())
-		}
-		err := wgConfig.RevokeClient(u.Instancename, u.Clientuuid)
-		responseObj := "Revocation Successfull"
-		if err != nil {
-			responseObj = err.Error()
-			return c.JSONPretty(http.StatusBadRequest, responseObj, "  ")
+		// u := new(resource.WgRevokeClientRequest)
+		// if err := c.Bind(u); err != nil {
+		// 	c.String(http.StatusBadRequest, err.Error())
+		// }
+		// err := wgConfig.RevokeClient(u.Instancename, u.Clientuuid)
+		// responseObj := "Revocation Successfull"
+		// if err != nil {
+		// 	responseObj = err.Error()
+		// 	return c.JSONPretty(http.StatusBadRequest, responseObj, "  ")
 
-		}
+		// }
 
-		return c.JSONPretty(http.StatusOK, responseObj, "  ")
+		// return c.JSONPretty(http.StatusOK, responseObj, "  ")
+		return c.String(http.StatusOK, "responseObj")
 	})
 }

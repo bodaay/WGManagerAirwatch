@@ -1,0 +1,24 @@
+{
+  "api_listen_address": "0.0.0.0",
+  "api_listen_port": 9696,
+  "api_use_tls": false,
+  "apitls_cert": "/etc/ssl/wgmanairwatch/wgmanairwatch.cert",
+  "apitls_key": "/etc/ssl/wgmanairwatch/wgmanairwatch.key",
+  "api_allowed_ips": [
+    "0.0.0.0/32"
+  ],
+  "wgmanager_address_ip": "127.0.0.1",
+  "wgmanager_address_port": 6969,
+  "allocate_client_event_ids": [
+    642
+  ],
+  "revoke_client_event_ids": [
+    642
+  ],
+  "WGConfigAirwatchMaps": [
+    {
+      "organization_name": "work1",
+      "map_wg_instance_name": "wg01"
+    }
+  ]
+}

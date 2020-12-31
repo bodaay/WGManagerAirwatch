@@ -20,7 +20,7 @@ func main() {
 	// }
 
 	//Load the config file
-	var wgc wgairwatch.WGConfig
+	var wgc wgairwatch.WGConfigAirwatch
 	err := wgc.ParseConfigFile(defaultConfigFilePath)
 	if err != nil {
 		newconfig, err := wgc.CreateDefaultconfig(defaultConfigFilePath)
@@ -30,10 +30,7 @@ func main() {
 		wgc = *newconfig
 	}
 	//Search the path for instances configuration files
-	err = wgc.LoadInstancesFiles()
-	if err != nil {
-		panic(err)
-	}
-	go webapi.StartClient(&wgc)
-	webapi.StartAdminClient(&wgc)
+
+	webapi.StartClient(&wgc)
+	// webapi.StartAdminClient(&wgc)
 }
