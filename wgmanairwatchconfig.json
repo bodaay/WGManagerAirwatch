@@ -15,10 +15,12 @@
   "revoke_client_event_ids": [
     642
   ],
-  "WGConfigAirwatchMaps": [
+  "wgconfig_airwatch_maps": [
     {
       "organization_name": "work1",
       "map_wg_instance_name": "wg01"
     }
-  ]
+  ],
+  "wgconfig_default_instance_name": "wg01",
+  "airwatch_rest_api_address": "mymdm.airwatch.org"
 }

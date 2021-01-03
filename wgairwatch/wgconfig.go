@@ -27,20 +27,26 @@ var defaultWGConfigMaps = []*WGConfigAirwatchInstanceMap{
 	},
 }
 
+const defaultInstanceName = "wg01"
+const defaultAirwatchRestAPIAddress = "mymdm.airwatch.org"
+
 //WGConfig Global Configuration For WGManager
 type WGConfigAirwatch struct {
 	sync.Mutex
-	APIListenAddress        string                         `json:"api_listen_address"`
-	APIListenPort           uint16                         `json:"api_listen_port"`
-	APIUseTLS               bool                           `json:"api_use_tls"`
-	APITLSCert              string                         `json:"apitls_cert"`
-	APITLSKey               string                         `json:"apitls_key"`
-	APIAllowedIPS           []string                       `json:"api_allowed_ips"`
-	WGManagerAddressIP      string                         `json:"wgmanager_address_ip"`
-	WGManagerPort           uint16                         `json:"wgmanager_address_port"`
-	AllocateClientEventsIDs []uint64                       `json:"allocate_client_event_ids"`
-	RevokeClientEventsIDs   []uint64                       `json:"revoke_client_event_ids"`
-	WGConfigAirwatchMaps    []*WGConfigAirwatchInstanceMap `json:""wgconfig_maps`
+	APIListenAddress            string                         `json:"api_listen_address"`
+	APIListenPort               uint16                         `json:"api_listen_port"`
+	APIUseTLS                   bool                           `json:"api_use_tls"`
+	APITLSCert                  string                         `json:"apitls_cert"`
+	APITLSKey                   string                         `json:"apitls_key"`
+	APIAllowedIPS               []string                       `json:"api_allowed_ips"`
+	WGManagerAddressIP          string                         `json:"wgmanager_address_ip"`
+	WGManagerPort               uint16                         `json:"wgmanager_address_port"`
+	WGManagerUseTLS             bool                           `json:"wgmanager_use_tls"`
+	AllocateClientEventsIDs     []uint64                       `json:"allocate_client_event_ids"`
+	RevokeClientEventsIDs       []uint64                       `json:"revoke_client_event_ids"`
+	WGConfigAirwatchMaps        []*WGConfigAirwatchInstanceMap `json:"wgconfig_airwatch_maps"`
+	WGConfigDefaultInstanceName string                         `json:"wgconfig_default_instance_name"`
+	AirwatchRestAPIAddress      string                         `json:"airwatch_rest_api_address"`
 }
 type WGConfigAirwatchInstanceMap struct {
 	OrganizationName  string `json:"organization_name"`
@@ -64,6 +70,9 @@ func (w *WGConfigAirwatch) CreateDefaultconfig(configpath string) (*WGConfigAirw
 	wgdefault.AllocateClientEventsIDs = defaultAllocateClientEventsIDS
 	wgdefault.RevokeClientEventsIDs = defaultRevokeClientEventsIDS
 	wgdefault.WGConfigAirwatchMaps = defaultWGConfigMaps
+	wgdefault.WGConfigDefaultInstanceName = defaultInstanceName
+	wgdefault.AirwatchRestAPIAddress = defaultAirwatchRestAPIAddress
+
 	err := wgdefault.SaveConfigFile(configpath)
 	if err != nil {
 		return nil, err

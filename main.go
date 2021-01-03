@@ -3,6 +3,7 @@ package main
 import (
 	"WGManagerAirwatch/webapi"
 	wgairwatch "WGManagerAirwatch/wgairwatch"
+	"log"
 	"os"
 )
 
@@ -29,8 +30,12 @@ func main() {
 		}
 		wgc = *newconfig
 	}
-	//Search the path for instances configuration files
 
+	res, err := wgc.VerifyWGManager()
+	if err != nil {
+		panic(err)
+	}
+	log.Println(res.String())
 	webapi.StartClient(&wgc)
 	// webapi.StartAdminClient(&wgc)
 }

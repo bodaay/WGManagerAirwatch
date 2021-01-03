@@ -16,4 +16,5 @@
 wgman/
 wginstance/
 etc/
-wgmanconfig.json
+output/
+wgmanairwatchconfig.json
