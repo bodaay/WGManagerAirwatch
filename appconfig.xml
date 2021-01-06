@@ -22,7 +22,7 @@
                 <value>{{wireguard.isLocked::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
-	   <string keyName="wireguard.onDemandCellular">
+	   <string keyName="wireguard.onDemandCelluar">
             <defaultValue>
                 <value>{{wireguard.onDemandCellular::com.addrek.wireguard}}</value>
             </defaultValue>
