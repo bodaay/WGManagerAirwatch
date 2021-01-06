@@ -4,47 +4,47 @@
     <dict>
         <string keyName="wireguard.allowedIPS">
             <defaultValue>
-                <value>{{wireguard.allowedIPS::com.addrek.airwatch}}</value>
+                <value>{{wireguard.allowedIPS::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
         <string keyName="wireguard.dnsServers">
             <defaultValue>
-                <value>{{wireguard.dnsServers::com.addrek.airwatch}}</value>
+                <value>{{wireguard.dnsServers::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
         <string keyName="wireguard.endpoint">
             <defaultValue>
-                <value>{{wireguard.endpoint::com.addrek.airwatch}}</value>
+                <value>{{wireguard.endpoint::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
         <string keyName="wireguard.isLocked">
             <defaultValue>
-                <value>{{wireguard.isLocked::com.addrek.airwatch}}</value>
+                <value>{{wireguard.isLocked::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
 	   <string keyName="wireguard.onDemandCellular">
             <defaultValue>
-                <value>{{wireguard.onDemandCellular::com.addrek.airwatch}}</value>
+                <value>{{wireguard.onDemandCellular::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
 	   <string keyName="wireguard.onDemandWifiEnabled">
             <defaultValue>
-                <value>{{wireguard.onDemandWifiEnabled::com.addrek.airwatch}}</value>
+                <value>{{wireguard.onDemandWifiEnabled::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
 	   <string keyName="wireguard.onDemandWifiSsidType">
             <defaultValue>
-                <value>{{wireguard.onDemandWifiSsidType::com.addrek.airwatch}}</value>
+                <value>{{wireguard.onDemandWifiSsidType::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
 	   <string keyName="wireguard.persistentKeepAlive">
             <defaultValue>
-                <value>{{wireguard.persistentKeepAlive::com.addrek.airwatch}}</value>
+                <value>{{wireguard.persistentKeepAlive::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
 	   <string keyName="wireguard.profile">
             <defaultValue>
-                <value>{{wireguard.profile::com.addrek.airwatch}}</value>
+                <value>{{wireguard.profile::com.addrek.wireguard}}</value>
             </defaultValue>
         </string>
     </dict>
