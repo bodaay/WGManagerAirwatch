@@ -7,19 +7,20 @@ import (
 	"sync"
 )
 
-const defaultAPIListenAdderss = "0.0.0.0"
-const defaultAPIListenPort = 9696
-const defaultAPIUseTLS = false
-const defaultAPICertFile = "/etc/ssl/wgmanairwatch/wgmanairwatch.cert"
-const defaultAPIKeyFile = "/etc/ssl/wgmanairwatch/wgmanairwatch.key"
+const defaultAirwatchEventsListenAdderss = "0.0.0.0"
+const defaultAirwatchEventsListenPort = 9696
 
-var defaultAllowedIPsCIDR = []string{"0.0.0.0/32"}
+// const defaultAirwatchEventsUseTLS = false
+const defaultAirwatchEventsCertFile = "/etc/ssl/wgmanairwatch/wgmanairwatch.cert"
+const defaultAirwatchEventsKeyFile = "/etc/ssl/wgmanairwatch/wgmanairwatch.key"
+
+var defaultAirwatchEventsIPsCIDR = []string{"0.0.0.0/0", "192.168.101.30/32", "192.168.101.35/32", "192.168.101.40/32"}
 
 const defaultWGMangerAddressIP = "127.0.0.1"
 const defaultWGMangerPort = 6969
 
-var defaultAllocateClientEventsIDS = []uint64{642}
-var defaultRevokeClientEventsIDS = []uint64{642}
+var defaultAllocateClientEventsIDS = []uint64{148, 642}
+var defaultRevokeClientEventsIDS = []uint64{39, 662}
 var defaultWGConfigMaps = []*WGConfigAirwatchInstanceMap{
 	{
 		OrganizationName:  "work1",
@@ -33,12 +34,12 @@ const defaultAirwatchRestAPIAddress = "mymdm.airwatch.org"
 //WGConfig Global Configuration For WGManager
 type WGConfigAirwatch struct {
 	sync.Mutex
-	APIListenAddress            string                         `json:"api_listen_address"`
-	APIListenPort               uint16                         `json:"api_listen_port"`
-	APIUseTLS                   bool                           `json:"api_use_tls"`
-	APITLSCert                  string                         `json:"apitls_cert"`
-	APITLSKey                   string                         `json:"apitls_key"`
-	APIAllowedIPS               []string                       `json:"api_allowed_ips"`
+	AirwatchEventsListenAddress string                         `json:"airwatch_events_listen_address"`
+	AirwatchEventsListenPort    uint16                         `json:"airwatch_events_listen_port"`
+	AirwatchEventsUseTLS        bool                           `json:"airwatch_events_use_tls"`
+	AirwatchEventsTLSCert       string                         `json:"airwatch_events_tls_cert"`
+	AirwatchEventsTLSKey        string                         `json:"airwatch_events_tls_key"`
+	AirwatchEventsAllowedIPS    []string                       `json:"airwatch_events_allowed_ips"`
 	WGManagerAddressIP          string                         `json:"wgmanager_address_ip"`
 	WGManagerPort               uint16                         `json:"wgmanager_address_port"`
 	WGManagerUseTLS             bool                           `json:"wgmanager_use_tls"`
@@ -47,6 +48,9 @@ type WGConfigAirwatch struct {
 	WGConfigAirwatchMaps        []*WGConfigAirwatchInstanceMap `json:"wgconfig_airwatch_maps"`
 	WGConfigDefaultInstanceName string                         `json:"wgconfig_default_instance_name"`
 	AirwatchRestAPIAddress      string                         `json:"airwatch_rest_api_address"`
+	AirwatchRestAPIToken        string                         `json:"airwatch_rest_api_token"`
+	AirwatchRestAPIUsername     string                         `json:"airwatch_rest_api_username"`
+	AirwatchRestAPIPassword     string                         `json:"airwatch_rest_api_password"`
 }
 type WGConfigAirwatchInstanceMap struct {
 	OrganizationName  string `json:"organization_name"`
@@ -58,13 +62,13 @@ type WGConfigAirwatchInstanceMap struct {
 //CreateDefaultconfig Create Default Config file based on our constants
 func (w *WGConfigAirwatch) CreateDefaultconfig(configpath string) (*WGConfigAirwatch, error) {
 	var wgdefault WGConfigAirwatch
-	wgdefault.APIListenAddress = defaultAPIListenAdderss
-	wgdefault.APIListenPort = defaultAPIListenPort
+	wgdefault.AirwatchEventsListenAddress = defaultAirwatchEventsListenAdderss
+	wgdefault.AirwatchEventsListenPort = defaultAirwatchEventsListenPort
 
-	wgdefault.APIUseTLS = defaultAPIUseTLS
-	wgdefault.APITLSCert = defaultAPICertFile
-	wgdefault.APITLSKey = defaultAPIKeyFile
-	wgdefault.APIAllowedIPS = defaultAllowedIPsCIDR
+	// wgdefault.AirwatchEventsUseTLS = defaultAirwatchEventsUseTLS
+	wgdefault.AirwatchEventsTLSCert = defaultAirwatchEventsCertFile
+	wgdefault.AirwatchEventsTLSKey = defaultAirwatchEventsKeyFile
+	wgdefault.AirwatchEventsAllowedIPS = defaultAirwatchEventsIPsCIDR
 	wgdefault.WGManagerAddressIP = defaultWGMangerAddressIP
 	wgdefault.WGManagerPort = defaultWGMangerPort
 	wgdefault.AllocateClientEventsIDs = defaultAllocateClientEventsIDS

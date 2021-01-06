@@ -1,14 +1,15 @@
 {
-  "api_listen_address": "0.0.0.0",
-  "api_listen_port": 9696,
-  "api_use_tls": false,
-  "apitls_cert": "/etc/ssl/wgmanairwatch/wgmanairwatch.cert",
-  "apitls_key": "/etc/ssl/wgmanairwatch/wgmanairwatch.key",
-  "api_allowed_ips": [
+  "airwatch_events_listen_address": "0.0.0.0",
+  "airwatch_events_listen_port": 9696,
+  "airwatch_events_use_tls": false,
+  "airwatch_events_tls_cert": "/etc/ssl/wgmanairwatch/wgmanairwatch.cert",
+  "airwatch_events_tls_key": "/etc/ssl/wgmanairwatch/wgmanairwatch.key",
+  "airwatch_events_allowed_ips": [
     "0.0.0.0/32"
   ],
   "wgmanager_address_ip": "127.0.0.1",
   "wgmanager_address_port": 6969,
+  "wgmanager_use_tls": false,
   "allocate_client_event_ids": [
     642
   ],

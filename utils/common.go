@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -479,4 +480,16 @@ func OpenBrowser(url string) {
 		log.Fatal(err)
 	}
 
+}
+func JsonEscape(i string) string {
+	b, err := json.Marshal(i)
+	if err != nil {
+		panic(err)
+	}
+	s := string(b)
+	return s[1 : len(s)-1]
+}
+
+func TrimString(s string) string {
+	return strings.Trim(s, " \n\r")
 }

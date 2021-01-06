@@ -1,10 +1,11 @@
 package main
 
 import (
-	"WGManagerAirwatch/webapi"
+	"WGManagerAirwatch/airwatchevents"
 	wgairwatch "WGManagerAirwatch/wgairwatch"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -30,12 +31,17 @@ func main() {
 		}
 		wgc = *newconfig
 	}
-
-	res, err := wgc.VerifyWGManager()
-	if err != nil {
-		panic(err)
+	for {
+		res, err := wgc.VerifyWGManager()
+		if err != nil {
+			log.Println(err)
+			time.Sleep(3 * time.Second)
+			continue
+		}
+		log.Println(res.String())
+		break
 	}
-	log.Println(res.String())
-	webapi.StartClient(&wgc)
+
+	airwatchevents.StartEventsClient(&wgc)
 	// webapi.StartAdminClient(&wgc)
 }
