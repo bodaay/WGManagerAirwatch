@@ -31,7 +31,7 @@
             <defaultValue>
                 <value>{{wireguard.onDemandWifiEnabled::com.addrek.wireguard}}</value>
             </defaultValue>
-        </string>
+        </string>                 
 	   <string keyName="wireguard.onDemandWifiSsidType">
             <defaultValue>
                 <value>{{wireguard.onDemandWifiSsidType::com.addrek.wireguard}}</value>

@@ -21,9 +21,9 @@ func AllocateClient(uniqueIdentifier string, mapName string, wgConfig *wgairwatc
 	client := resty.New()
 	url := ""
 	if wgConfig.WGManagerUseTLS {
-		url = fmt.Sprintf("https://%s:%d/api/client", wgConfig.WGManagerAddressIP, wgConfig.WGManagerPort)
+		url = fmt.Sprintf("https://%s:%d/api/client/json", wgConfig.WGManagerAddressIP, wgConfig.WGManagerPort)
 	} else {
-		url = fmt.Sprintf("http://%s:%d/api/client", wgConfig.WGManagerAddressIP, wgConfig.WGManagerPort)
+		url = fmt.Sprintf("http://%s:%d/api/client/json", wgConfig.WGManagerAddressIP, wgConfig.WGManagerPort)
 	}
 	instanceName := strings.ToLower(wgConfig.WGConfigDefaultInstanceName) //by default will set it to default instance name
 	for _, imrans := range wgConfig.WGConfigAirwatchMaps {

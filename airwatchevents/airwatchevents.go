@@ -6,6 +6,7 @@ import (
 	"WGManagerAirwatch/utils"
 	"WGManagerAirwatch/wgairwatch"
 	"crypto/tls"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -14,7 +15,6 @@ import (
 	"net"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/labstack/echo/v4"
@@ -102,22 +102,35 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 				continue
 			}
 			log.Printf("Request to add ClientID: %s   For Organization Name: %s\n", u.AssetNumber, u.OrganizationGroupName)
-			vpnconfig, err := airwatchapi.AllocateClient(u.AssetNumber, u.OrganizationGroupName, wgConfig)
+			vpnconfigjson, err := airwatchapi.AllocateClient(u.AssetNumber, u.OrganizationGroupName, wgConfig)
 			if err != nil {
 				return c.String(http.StatusBadRequest, err.Error())
 			}
 
 			// log.Println(vpnconfig)
-
-			entries := strings.Split(vpnconfig, "\n")
-
-			m := make(map[string]string)
-			for _, e := range entries {
-				parts := strings.Split(e, "=")
-				if len(parts) > 1 {
-					m[strings.Trim(parts[0], " \n\r")] = strings.Trim(parts[1], " \n\r")
-				}
+			type confData struct {
+				ClientAddress       string   `json:"Address"`
+				PrivateKey          string   `json:"PrivateKey"`
+				PublicKey           string   `json:"PublicKey"`
+				Endpoint            string   `json:"Endpoint"`
+				DNS                 []string `json:"DNS"`
+				AllowedIPs          []string `json:"AllowedIPs"`
+				PersistentKeepalive uint16   `json:"PersistentKeepalive"`
 			}
+			var cJSON confData
+			err = json.Unmarshal([]byte(vpnconfigjson), &cJSON)
+			if err != nil {
+				return c.String(http.StatusBadRequest, err.Error())
+			}
+			// entries := strings.Split(vpnconfig, "\n")
+
+			// m := make(map[string]string)
+			// for _, e := range entries {
+			// 	parts := strings.Split(e, "=")
+			// 	if len(parts) > 1 {
+			// 		m[strings.Trim(parts[0], " \n\r")] = strings.Trim(parts[1], " \n\r")
+			// 	}
+			// }
 
 			cAttributes := resource.UpdateCustomAttributesRequest{}
 
@@ -130,35 +143,37 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributeIsLocked)
 
 			// wireguard.profile
+			profilestring := fmt.Sprintf("%s,%s,%s", utils.TrimString(cJSON.ClientAddress), utils.TrimString(cJSON.PublicKey), utils.TrimString(cJSON.PrivateKey))
+			profilestringHex := hex.EncodeToString([]byte(profilestring))
 			attributeProfile := resource.CustomAttribute{
 				Name:             "wireguard.profile",
-				Value:            fmt.Sprintf("%s,%s,%s", utils.TrimString(m["Address"]), utils.TrimString(m["PublicKey"]), utils.TrimString(m["PrivateKey"])),
+				Value:            profilestringHex,
 				ApplicationGroup: defaultApplicationGroup,
 			}
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributeProfile)
 
 			// wireguard.allowedIPS
 			tempstring := ""
-			for _, k := range strings.Split(m["AllowedIPs"], ",") {
+			for _, k := range cJSON.AllowedIPs {
 				tempstring += k + ","
 			}
 			tempstring = tempstring[:len(tempstring)-1]
 			attributeAllowedIPs := resource.CustomAttribute{
 				Name:             "wireguard.allowedIPS",
-				Value:            tempstring,
+				Value:            hex.EncodeToString([]byte(tempstring)),
 				ApplicationGroup: defaultApplicationGroup,
 			}
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributeAllowedIPs)
 
 			// wireguard.dnsServers
 			tempstring = ""
-			for _, k := range strings.Split(m["DNS"], ",") {
+			for _, k := range cJSON.DNS {
 				tempstring += utils.TrimString(k) + ","
 			}
 			tempstring = tempstring[:len(tempstring)-1]
 			attributeDNSServers := resource.CustomAttribute{
 				Name:             "wireguard.dnsServers",
-				Value:            tempstring,
+				Value:            hex.EncodeToString([]byte(tempstring)),
 				ApplicationGroup: defaultApplicationGroup,
 			}
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributeDNSServers)
@@ -166,7 +181,7 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 			// wireguard.endpoint
 			attributeEndpoint := resource.CustomAttribute{
 				Name:             "wireguard.endpoint",
-				Value:            utils.TrimString(m["Endpoint"]),
+				Value:            hex.EncodeToString([]byte(utils.TrimString(cJSON.Endpoint))),
 				ApplicationGroup: defaultApplicationGroup,
 			}
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributeEndpoint)
@@ -174,7 +189,7 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 			// wireguard.persistentKeepAlive
 			attributePersistentKeepAlive := resource.CustomAttribute{
 				Name:             "wireguard.persistentKeepAlive",
-				Value:            utils.TrimString(m["PersistentKeepalive"]),
+				Value:            utils.TrimString(fmt.Sprintf("%d", cJSON.PersistentKeepalive)),
 				ApplicationGroup: defaultApplicationGroup,
 			}
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributePersistentKeepAlive)
@@ -195,7 +210,7 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 			// tempstring = tempstring[:len(tempstring)-1]
 			attributeOnDemandWifiSsids := resource.CustomAttribute{
 				Name:             "wireguard.onDemandWifiSsids",
-				Value:            "WifiSSid1,WifiSSid2",
+				Value:            hex.EncodeToString([]byte("WifiSSid1,WifiSSid2")),
 				ApplicationGroup: defaultApplicationGroup,
 			}
 			cAttributes.CustomAttributes = append(cAttributes.CustomAttributes, attributeOnDemandWifiSsids)
