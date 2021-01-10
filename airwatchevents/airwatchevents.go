@@ -102,7 +102,7 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 				continue
 			}
 			log.Printf("Request to add ClientID: %s   For Organization Name: %s\n", u.AssetNumber, u.OrganizationGroupName)
-			vpnconfigjson, err := airwatchapi.AllocateClient(u.AssetNumber, u.OrganizationGroupName, wgConfig)
+			vpnconfigjson, err := airwatchapi.AllocateClient(fmt.Sprintf("%d", u.DeviceID), u.OrganizationGroupName, wgConfig)
 			if err != nil {
 				return c.String(http.StatusBadRequest, err.Error())
 			}
