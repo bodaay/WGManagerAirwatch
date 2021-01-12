@@ -256,7 +256,7 @@ func postEventsReceived(e *echo.Echo, wgConfig *wgairwatch.WGConfigAirwatch) {
 			if eids != u.EventID {
 				continue
 			}
-			err := airwatchapi.RevokeClient(u.AssetNumber, u.OrganizationGroupName, wgConfig)
+			err := airwatchapi.RevokeClient(fmt.Sprintf("%d", u.DeviceID), u.OrganizationGroupName, wgConfig)
 			if err != nil {
 				return c.String(http.StatusBadRequest, err.Error())
 			}
